@@ -1,0 +1,41 @@
+services:
+  mongo:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    command: ["--replSet", "my-rs"]
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-init:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongodb-init
+    depends_on:
+      - mongo
+    entrypoint: >
+      bash -c "
+      until mongosh --host mongodb --port 27017 --eval 'print(\"waited for connection\")'; do
+        sleep 5
+      done &&
+      mongosh --host mongodb --port 27017 --eval 'rs.initiate({_id: \"my-rs\", members: [{_id: 0, host: \"localhost\"}]})'
+      "
+
+  typesense:
+    env_file:
+      - .env
+    image: typesense/typesense:26.0
+    container_name: typesense
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    volumes:
+      - typesense_data:/data
+    environment:
+      TYPESENSE_API_KEY: abcd
+      TYPESENSE_DATA_DIR: /data
+
+volumes:
+  mongo_data:
+  typesense_data:
