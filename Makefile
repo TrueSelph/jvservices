@@ -8,18 +8,18 @@ delay:
 
 up:
 	@echo "Starting Jivas services."
-	docker compose up -d mongo-init typesense
+	docker compose up -d mongo-init redis typesense
 
 down:
 	docker compose down
 
 restart:
 	@echo "Restarting services."
-	docker compose restart mongo typesense
+	docker compose restart mongo redis typesense
 
 stop:
 	@echo "Stopping services."
-	docker compose stop mongo typesense
+	docker compose stop mongo redis typesense
 
 purge-graph:
 	mongosh jaseci --eval "db.dropDatabase()"

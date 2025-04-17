@@ -35,7 +35,23 @@ services:
     environment:
       TYPESENSE_API_KEY: abcd
       TYPESENSE_DATA_DIR: /data
+  
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"  # Redis server port
+      - "8001:8001"  # Redis Insight web UI
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
 volumes:
   mongo_data:
   typesense_data:
+  redis-data:
+ 
