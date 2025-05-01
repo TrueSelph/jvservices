@@ -8,7 +8,8 @@
 # make restart      # restarts all services
 # make restart SERVICES="redis" # restarts only redis
 
-WPP_SERVER_REPO = https://github.com/wppconnect-team/wppconnect-server.git
+# WPP_SERVER_REPO = https://github.com/wppconnect-team/wppconnect-server.git
+WPP_SERVER_REPO = https://github.com/TrueSelph/wppconnect-server.git
 WPP_SERVER_DIR = wppconnect-server
 
 # By default do not include wppconnect-server in "generic" up/build/stop
